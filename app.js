@@ -1,5 +1,6 @@
 // const command = process.argv[2];
-const yargs = require('yargs')
+const yargs = require('yargs');
+const notes = require('./notes.js');
 
 //customzie yargs version
 yargs.version('1.1.0');
@@ -21,7 +22,7 @@ yargs.command({
         }
     },
     handler: function(argv){
-        console.log({'Title' :  argv.title, 'body': argv.body});
+        notes.addNote(argv.title, argv.body);
     }
 })
 
@@ -30,8 +31,15 @@ yargs.command({
 yargs.command({
     command: 'remove',
     describe: 'Removing a note',
-    handler: function(){
-        console.log('Removing a task!');
+    builder: {
+        title: {
+            describe: 'Note title to be removed',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function(argv){
+        notes.removeNote(argv.title);
     }
 })
 
@@ -41,7 +49,7 @@ yargs.command({
     'command': 'list',
     'describe': 'Listing notes',
     handler: function(){
-        console.log('Listing tasks!');
+        notes.listNotes();
     }
 })
 
@@ -50,8 +58,15 @@ yargs.command({
 yargs.command({
     'command': 'read',
     'describe': 'Reading a note',
-    handler: function(){
-        console.log('Reading a task!');
+    builder: {
+        title: {
+            describe: 'Note title to be fetch',
+            demandOption: true,
+            type: 'string'
+        }
+    },
+    handler: function(argv){
+        notes.readNote(argv.title);
     }
 })
 
